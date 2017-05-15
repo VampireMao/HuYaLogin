@@ -13,6 +13,7 @@ using System.IO;
 using System.Collections;
 using System.Security;
 using System.Xml;
+using System.Net.Http;
 
 namespace HuYaLogin
 {
@@ -57,78 +58,113 @@ namespace HuYaLogin
 
         }
 
-        private void BtnStart_Click(object sender, EventArgs e)
+        private async void BtnStart_Click(object sender, EventArgs e)
         {
             #region webclient
-            WebClient wc = new WebClient();
-            NameValueCollection post = new NameValueCollection();
-            //wc.Headers.Add("Connection", "keep-alive");
-            //wc.Headers.Add("Content-type", "application/json");
-            for (int i = 0; i < dataGridView1.RowCount; i++)
+            //WebClient wc = new WebClient();
+            //NameValueCollection post = new NameValueCollection();
+
+            //for (int i = 0; i < dataGridView1.RowCount; i++)
+            //{
+            //    string tmp = RSA("dfds156s");
+            //    wc.Headers.Add("Cookie", GetCookie("http://www.huya.com/udb_web/checkLogin.php"));
+            //    wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0");
+            //    wc.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3");
+            //    wc.Headers.Add("Accept-Encoding", "gzip, deflate, br");
+            //    //wc.Headers.Add("Referer", "https://lgn.yy.com/lgn/oauth/authorize.do?oauth_token=" + GetOauthToken() + "&denyCallbackURL=&regCallbackURL=http://www.huya.com/udb_web/udbport2.php?do=callback&UIStyle=xelogin&rdm=0.38588997092577465");
+            //    wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            //    post.Clear();
+            //    post.Add("username", dataGridView1.Rows[i].Cells[0].Value.ToString());
+            //    post.Add("pwdencrypt", dataGridView1.Rows[i].Cells[1].Value.ToString());
+            //    post.Add("oauth_token", GetOauthToken());
+            //    post.Add("UIStyle", "xelogin");
+            //    post.Add("appid", "5216");
+            //    post.Add("isRemMe", "0");
+            //    post.Add("hiido", "1");
+            //    post.Add("denyCallbackURL", "");
+            //    post.Add("mxc", "");
+            //    post.Add("vk", "");
+            //    post.Add("mmc", "");
+            //    post.Add("vv", "");
+
+            //    byte[] byRemoteInfo = wc.UploadValues("https://lgn.yy.com/lgn/oauth/x2/s/login_asyn.do", "POST", post);
+
+            //    string s = Encoding.UTF8.GetString(byRemoteInfo);
+            //    //wc.Headers.Clear();
+            //    //WebHeaderCollection headers = wc.ResponseHeaders;
+            //    //wc.Headers.Add("P3P", headers["P3P"]);
+            //    //wc.Headers.Add("Cookie", headers["Set-Cookie"]);
+            //    //wc.Headers.Add("Server", headers["Server"]);
+            //    post.Clear();
+            //    //JObject obj = (JObject)JsonConvert.DeserializeObject(s);  //序列化（也可使用JToken代替JObject）
+            //    //post.Add("do", "callback");
+            //    //post.Add("code", obj["code"].ToString());
+            //    //post.Add("hdcode", obj["hdcode"].ToString());
+            //    //obj = (JObject)JsonConvert.DeserializeObject(obj["obj"].ToString());
+            //    string url = "http://i.huya.com/index.php?m=ProfileSetting";
+            //    post.Add("m", "ProfileSetting");
+            //    post.Add("do", "ajaxGetOpenRtmpAddr");
+            //    post.Add("game_id", "411");
+            //    post.Add("live_desc", "经典网游之一，你喜欢吗？");
+            //    post.Add("game_name", "经典怀旧");
+            //    post.Add("live_flag", "0");
+            //    post.Add("read_only", "0");
+            //    byRemoteInfo = wc.UploadValues(url, post);
+
+            //    s = Encoding.UTF8.GetString(byRemoteInfo);
+            //    StringBuilder sb = new StringBuilder();
+            //    GZipStream g = new GZipStream((Stream)(new MemoryStream(byRemoteInfo)), CompressionMode.Decompress);
+            //    byte[] d = new byte[20480];
+            //    int l = g.Read(d, 0, 20480);
+            //    while (l > 0)
+            //    {
+            //        sb.Append(Encoding.UTF8.GetString(d, 0, l));
+            //        l = g.Read(d, 0, 20480);
+            //    }
+            //    s = sb.ToString();
+            //}
+            #endregion
+
+            #region HttpClient
+            var handler = new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip };
+            handler.AllowAutoRedirect = true;
+            using (var httpClient = new HttpClient(handler))
             {
-                string tmp = RSA("dfds156s");
-                wc.Headers.Add("Cookie", GetCookie("http://www.huya.com/udb_web/checkLogin.php"));
-                wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0");
-                wc.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3");
-                wc.Headers.Add("Accept-Encoding", "gzip, deflate, br");
-                //wc.Headers.Add("Referer", "https://lgn.yy.com/lgn/oauth/authorize.do?oauth_token=" + GetOauthToken() + "&denyCallbackURL=&regCallbackURL=http://www.huya.com/udb_web/udbport2.php?do=callback&UIStyle=xelogin&rdm=0.38588997092577465");
-                wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                post.Clear();
-                post.Add("username", dataGridView1.Rows[i].Cells[0].Value.ToString());
-                post.Add("pwdencrypt", dataGridView1.Rows[i].Cells[1].Value.ToString());
-                post.Add("oauth_token", GetOauthToken());
-                post.Add("UIStyle", "xelogin");
-                post.Add("appid", "5216");
-                post.Add("isRemMe", "0");
-                post.Add("hiido", "1");
-                post.Add("denyCallbackURL", "");
-                post.Add("mxc", "");
-                post.Add("vk", "");
-                post.Add("mmc", "");
-                post.Add("vv", "");
-
-                byte[] byRemoteInfo = wc.UploadValues("https://lgn.yy.com/lgn/oauth/x2/s/login_asyn.do", "POST", post);
-                
-                string s = Encoding.UTF8.GetString(byRemoteInfo);
-                wc.Headers.Clear();
-                WebHeaderCollection headers = wc.ResponseHeaders;
-                wc.Headers.Add("P3P", headers["P3P"]);
-                wc.Headers.Add("Cookie", headers["Set-Cookie"]);
-                wc.Headers.Add("Server", headers["Server"]);
-                post.Clear();
-                JObject obj = (JObject)JsonConvert.DeserializeObject(s);  //序列化（也可使用JToken代替JObject）
-                post.Add("do", "callback");
-                post.Add("code", obj["code"].ToString());
-                post.Add("hdcode", obj["hdcode"].ToString());
-                obj = (JObject)JsonConvert.DeserializeObject(obj["obj"].ToString());
-                string url = obj["callbackURL"].ToString();
-                post.Add("pos", obj["pos"].ToString());
-                post.Add("redirectURL", obj["redirectURL"].ToString());
-                post.Add("vk", obj["vk"].ToString());
-                post.Add("vt", obj["vt"].ToString());
-                post.Add("verifyid", obj["verifyid"].ToString());
-                post.Add("svpic", obj["svpic"].ToString());
-                post.Add("itvjs", obj["itvjs"].ToString());
-                post.Add("strategy", obj["strategy"].ToString());
-                post.Add("qin", obj["qin"].ToString());
-                post.Add("yyuid", obj["yyuid"].ToString());
-                post.Add("passport", obj["passport"].ToString());
-
-                byRemoteInfo = wc.UploadValues(url, post);
-
-                s = Encoding.UTF8.GetString(byRemoteInfo);
-                StringBuilder sb = new StringBuilder();
-                GZipStream g = new GZipStream((Stream)(new MemoryStream(byRemoteInfo)), CompressionMode.Decompress);
-                byte[] d = new byte[20480];
-                int l = g.Read(d, 0, 20480);
-                while (l > 0)
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    sb.Append(Encoding.UTF8.GetString(d, 0, l));
-                    l = g.Read(d, 0, 20480);
+                    var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+                {
+                        { "username", dataGridView1.Rows[i].Cells[0].Value.ToString() },
+                        {"pwdencrypt", dataGridView1.Rows[i].Cells[1].Value.ToString() },
+                        {"oauth_token", GetOauthToken() },
+                        {"UIStyle", "xelogin" },
+                        {"appid", "5216" },
+                        {"isRemMe", "1" },
+                        {"hiido", "1" },
+                        {"denyCallbackURL", "" },
+                        {"mxc", "" },
+                        {"vk", "" },
+                        {"mmc", "" },
+                        {"vv", "" }
+                });
+                    var response = await httpClient.PostAsync("https://lgn.yy.com/lgn/oauth/x2/s/login_asyn.do", content);
+                    string s = await response.Content.ReadAsStringAsync();
+
+                    var en = response.Headers.GetValues("Set-Cookie");
+                    response.Headers.Add("Cookie", en);
+                    JObject obj = (JObject)JsonConvert.DeserializeObject(s);
+                    obj = (JObject)JsonConvert.DeserializeObject(obj["obj"].ToString());
+                    response = await httpClient.GetAsync(obj["callbackURL"].ToString());
+                    s = await response.Content.ReadAsStringAsync();
+                    en = response.Headers.GetValues("Set-Cookie");
+                    response.Headers.Add("Cookie", en);
+
+                    response = await httpClient.GetAsync("https://lgn.huya.com/lgn/oauth/wck_n.do?oauth_mckey4cookie=1bceaf76d5a1804a06f179a9112341898aab904ca458f4b7643a27cbe62c101fd4e12b4bb5b167cfc306f08708a9149d&oauth_signature=6tWQSMDYFntUznNrtacIhlnkNb0%3D&reqDomainList=lgn.yy.tv,lgn.yy.com,lgn.duowan.com&rdm=0.11976557167132512");
+                    s = await response.Content.ReadAsStringAsync();
+                    en = response.Headers.GetValues("Set-Cookie");
                 }
-                s = sb.ToString();
             }
-            #endregion            
+            #endregion
         }
 
         #region 获取Cookie
