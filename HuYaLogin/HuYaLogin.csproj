@@ -92,6 +92,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="1.html" />
     <Content Include="虎牙账号.txt" />
   </ItemGroup>
   <ItemGroup>

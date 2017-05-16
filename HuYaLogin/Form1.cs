@@ -17,6 +17,7 @@ using System.Net.Http;
 
 namespace HuYaLogin
 {
+    [System.Runtime.InteropServices.ComVisible(true)]
     public partial class Form1 : Form
     {
         public Form1()
@@ -26,6 +27,17 @@ namespace HuYaLogin
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            object[] objs = new object[1];
+            objs[0] = "dfds156s";
+            //webBrowser1.Navigate(Application.StartupPath + @"\1.html");
+            webBrowser1.DocumentText = @"<script type='text / javascript'>
+        function returnString()
+            {
+                return 'This is a test.';
+            }
+    </ script > ";
+            webBrowser1.ObjectForScripting = this;
+            string sd = webBrowser1.Document.InvokeScript("returnString").ToString();
             dataGridView1.Rows.Add();
             dataGridView1.Rows[0].Cells[0].Value = "2015670083";
             dataGridView1.Rows[0].Cells[1].Value = "755bacc4a7f16c59caba852fbbae5fc65153a4ac28625cdf6c72fdc5bb9b1ec9518ada7d2ccb11792c865c7f218d27989005724bfa077770bb126c38a707e6fe8854e4e96c68cee44c81a065491c518fb7a77b183b4f13bd8f7ac79d114101728128d113be45e0c2e2d1885705d47e781f7ef720838722ea4f681126bdee9639";
